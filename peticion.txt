@@ -1,5 +1,6 @@
-GET / HTTP/1.1 
-Host: sing.ei.uvigo.es
-Content-Length: 10
-wfiwfiuherufoieriog
+POST /resource HTTP/1.1 
+Host: localhost
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 85
 
+message=Hello world!!&mensaje=¡¡Hola mundo!!&mensaxe=Ola mundo!!&mensagem=Olá mundo!!

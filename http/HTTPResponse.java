@@ -1,15 +1,10 @@
 package es.uvigo.esei.dai.hybridserver.http;
 
-import java.io.BufferedWriter;
-import java.net.URLEncoder;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class HTTPResponse {
 	
@@ -19,8 +14,7 @@ public class HTTPResponse {
 	private Map<String, String> parameters; 
 	
 	public HTTPResponse() {
-		Map<String, String> parameters = new LinkedHashMap<String, String>();
-		this.parameters = parameters;
+		
 		
 	}
 
@@ -53,8 +47,7 @@ public class HTTPResponse {
 	}
 
 	public String putParameter(String name, String value) {
-		this.parameters.put(name, value);
-		return "Par clave valor introducido correctamente.";
+		return null;
 	}
 
 	public boolean containsParameter(String name) {
@@ -73,47 +66,6 @@ public class HTTPResponse {
 	}
 
 	public void print(Writer writer) throws IOException {
-		try(BufferedWriter buffer = new BufferedWriter(writer))
-		{
-	
-		buffer.write(this.getVersion()+" "+this.getStatus().getCode()+" "+this.getStatus().getStatus());
-		buffer.newLine();
-		
-		if(this.getParameters()!=null)
-		{
-		if(!this.parameters.isEmpty())
-		{
-		System.out.println("Entra aqui");
-		Set<String> listaClaves = this.getParameters().keySet();
-		Iterator<String> it = listaClaves.iterator();
-		while(it.hasNext())
-		{
-			String clave = it.next();
-			String parametro = this.getParameters().get(clave);
-			buffer.newLine();
-			buffer.write(clave+": "+parametro);
-		}
-		buffer.newLine();
-		buffer.newLine();
-		}
-		}
-
-		if(this.getContent()!=null)
-		{
-		int tamanho = this.getContent().length();
-		buffer.write("Content-Length: "+tamanho);
-		buffer.newLine();
-		buffer.newLine();
-		buffer.write(this.getContent());
-		}
-		else
-		{
-			buffer.newLine();
-		}
-		
-		buffer.flush();
-		}
-		
 	}
 
 	@Override

@@ -1,0 +1,4 @@
+HTTP/1.1 200 OK
+
+Parametro1: Valor1
+Parametro2: Valor2
