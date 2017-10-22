@@ -8,10 +8,10 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import es.uvigo.esei.dai.hybridserver.html.HtmlController;
-import es.uvigo.esei.dai.hybridserver.html.HtmlDAO;
-import es.uvigo.esei.dai.hybridserver.html.HtmlDBDAO;
-import es.uvigo.esei.dai.hybridserver.html.HtmlMapDAO;
+import es.uvigo.esei.dai.hybridserver.html.controller.HtmlController;
+import es.uvigo.esei.dai.hybridserver.html.model.dao.HtmlDAO;
+import es.uvigo.esei.dai.hybridserver.html.model.dao.HtmlDBDAO;
+import es.uvigo.esei.dai.hybridserver.html.model.dao.HtmlMapDAO;
 import es.uvigo.esei.dai.hybridserver.thread.ServiceThread;
 
 public class HybridServer {
@@ -25,13 +25,6 @@ public class HybridServer {
 	private String dbPassword;
 	private HtmlDAO dao;
 
-	public int getNumClients() {
-		return numClients;
-	}
-
-	public HtmlDAO getDao() {
-		return dao;
-	}
 
 	public HybridServer() {
 		this.numClients = 50;
@@ -39,7 +32,7 @@ public class HybridServer {
 		this.dbUrl = "jdbc:mysql://localhost:3306/hstestdb";
 		this.dbUser = "hsdb";
 		this.dbPassword = "hsdbpass";
-		this.dao = new HtmlDBDAO(dbUrl,dbUser,dbPassword);
+		this.dao = new HtmlDBDAO(dbUrl, dbUser, dbPassword);
 	}
 
 	public HybridServer(Map<String, String> pages) {
@@ -49,18 +42,24 @@ public class HybridServer {
 	}
 
 	public HybridServer(Properties properties) {
-
 		this.numClients = Integer.parseInt(properties.getProperty("numClients"));
 		this.port = Integer.parseInt(properties.getProperty("port"));
 		this.dbUrl = properties.getProperty("db.url");
 		this.dbUser = properties.getProperty("db.user");
 		this.dbPassword = properties.getProperty("db.password");
-		this.dao = new HtmlDBDAO(dbUrl,dbUser,dbPassword);
-
+		this.dao = new HtmlDBDAO(dbUrl, dbUser, dbPassword);
 	}
 
 	public int getPort() {
-		return port;
+		return this.port;
+	}
+	
+	public int getNumClients() {
+		return this.numClients;
+	}
+
+	public HtmlDAO getDao() {
+		return this.dao;
 	}
 
 	public void start() {
@@ -74,8 +73,8 @@ public class HybridServer {
 						try {
 							Socket socket = serverSocket.accept();
 
-							if (stop)
-								break;
+							if (stop) break;
+
 							HtmlController htmlController = new HtmlController(getDao());
 							threadPool.execute(new ServiceThread(socket, htmlController));
 

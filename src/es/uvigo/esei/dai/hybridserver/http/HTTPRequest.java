@@ -117,7 +117,7 @@ public class HTTPRequest {
 				}
 
 			} else {
-				throw new HTTPParseException("La cabecera no se ha escrito correctamente.");
+				throw new HTTPParseException("Invalid HTTPRequest.");
 			}
 		}
 
@@ -136,14 +136,14 @@ public class HTTPRequest {
 			if (this.contentLength > 0) {
 				char[] contentArray = new char[this.contentLength];
 				if(this.reader.read(contentArray) != contentArray.length){
-					throw new HTTPParseException("Invalid content length");
+					throw new HTTPParseException("Invalid content length.");
 				}
 				
 				this.content = new String(contentArray);
 
 				// Descifrar el contenido
-				if (this.resourceHeaderParameters.get("Content-Type") != null && this.resourceHeaderParameters
-						.get("Content-Type").startsWith("application/x-www-form-urlencoded")) {
+				String type = this.resourceHeaderParameters.get("Content-Type");
+				if (type != null && type.startsWith("application/x-www-form-urlencoded")) {
 					this.content = URLDecoder.decode(this.content, "UTF-8");
 				}
 				parameters = this.content.split("\\&");
